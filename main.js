@@ -10,6 +10,14 @@ const s = _width <= _height ? _width / cols:_height / cols;
 
 const sudoku = new Array(cols);
 
+class Cell {
+    constructor(x, y) {
+        this.y = x;
+        this.y = y;
+        
+    }
+}
+
 createDivs();
 
 function createDivs() {
