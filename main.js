@@ -1,5 +1,4 @@
 const vw = window.innerWidth, vh = window.innerHeight;
-
 const sudokuContainer = document.getElementById('sudokuContainer');
 sudokuContainer.style.width = vw <= vh ? vw * 0.95 + 'px':vh * 0.95 + 'px';
 sudokuContainer.style.height = sudokuContainer.style.width;
@@ -16,7 +15,16 @@ class Cell {
         this.y = y;
         this.div = createDiv(sudokuContainer, this.x * Math.pow(size, 2) + this.y + 1);
         this.indeces = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-        this.number = Math.floor(Math.round());
+        this.number = this.indeces[Math.floor(Math.random() * this.indeces.length)];
+    }
+
+    get number() {
+        return this._number;
+    }
+
+    set number(val) {
+        this._number = val;
+        this.div.children[0].textContent = this._number;
     }
 }
 
@@ -40,4 +48,8 @@ function createDiv(parent, content) {
     e.style.height = s +'px';
     e.classList.add('item');
     return parent.appendChild(e);
+}
+
+function fillSudoku() {
+
 }
