@@ -12,20 +12,21 @@ const sudoku = new Array(cols);
 
 class Cell {
     constructor(x, y) {
-        this.y = x;
+        this.x = x;
         this.y = y;
+        this.div = createDiv(sudokuContainer, x, y);
         this.indeces = [1, 2, 3, 4, 5, 6, 7, 8, 9];
         this.number = undefined;
     }
 }
 
-createDivs();
+makeArray();
 
-function createDivs() {
+function makeArray() {
     for (let i = 0; i < cols; i++) {
         sudoku[i] = new Array(rows);
         for (let j = 0; j < rows; j++) {
-            createDiv(sudokuContainer, i, j);
+            sudoku[i][j] = new Cell(i, j);
         }
     }
 }
@@ -38,5 +39,5 @@ function createDiv(parent, i, j) {
     e.style.width = s - 1 +'px';
     e.style.height = s +'px';
     e.classList.add('item');
-    parent.appendChild(e);
+    return parent.appendChild(e);
 }
