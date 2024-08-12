@@ -14,7 +14,8 @@ class Cell {
         this.x = x;
         this.y = y;
         this.div = createDiv(sudokuContainer, this.x * Math.pow(size, 2) + this.y + 1);
-        this.indeces = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        this.indeces = [];
+        for (let i = 1; i >= Math.pow(size, 2); i++) this.indeces.push(i);
         this.number = this.indeces[Math.floor(Math.random() * this.indeces.length)];
     }
 
@@ -41,13 +42,26 @@ function makeArray() {
 
 function createDiv(parent, content) {
     const e = document.createElement('div');
-    const p = document.createElement('p');
-    p.textContent = content;
-    e.appendChild(p);
+    e.appendChild(createP(content));
     e.style.width = s - 1 +'px';
     e.style.height = s +'px';
     e.classList.add('item');
+
     return parent.appendChild(e);
+}
+
+function createP(content) {
+    const p = document.createElement('p');
+    p.textContent = content;
+
+    p.contentEditable = true;
+    const observer = new MutationObserver(list => {
+        const e = list[0].target;
+        if(e.textContent !== '<empty string>' || parseInt(e.textContent).toString() == 'NaN' || parseInt(e.textContent) < 0 || parseInt(e.textContent) > Math.pow(size, ))
+        console.log(e.textContent);
+    });
+    observer.observe(p, {attributes: false, childList: true, subtree: true});
+    return p;
 }
 
 function fillSudoku() {
