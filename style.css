@@ -14,11 +14,27 @@ body {
 
 .item {
     background-color: beige;
-    border: 2px solid black;
+    border: 1px solid black;
     box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.item-modsize-0-x {
+    border-left-width: 5px;
+}
+
+.item-modsize-0-y {
+    border-top-width: 5px;
+}
+
+.last-item-x {
+    border-right-width: 5px;
+}
+
+.last-item-y {
+    border-bottom-width: 5px;
 }
 
 #sudokuContainer {
