@@ -3,11 +3,13 @@ const sudokuContainer = document.getElementById('sudokuContainer');
 sudokuContainer.style.width = vw <= vh ? vw * 0.95 + 'px':vh * 0.95 + 'px';
 sudokuContainer.style.height = sudokuContainer.style.width;
 
-const size = 2;
+const size = 2, modes = ['inspect', 'delete', 'insert', 'insert node'];
 const _width = sudokuContainer.offsetWidth, _height = sudokuContainer.offsetHeight;
 const s = _width <= _height ? _width / Math.pow(size, 2):_height / Math.pow(size, 2);
 
 const sudoku = new Array(Math.pow(size, 2));
+
+let mode = modes[0];
 
 class Cell {
     constructor(x, y) {
@@ -34,6 +36,7 @@ class Cell {
 }
 
 makeArray();
+listeners();
 
 function makeArray() {
     for (let i = 0; i < Math.pow(size, 2); i++) {
@@ -61,4 +64,26 @@ function fillSudoku() {
             
         }        
     }
+}
+
+function listeners() {
+    Array.from(document.getElementsByClassName('item')).forEach(e => {
+        e.addEventListener('click', event => {
+            console.log(e);
+        });
+    });
+
+    document.getElementsByClassName('toolbarEle')[0].addEventListener('click', event => {
+        mode = modes[1];
+        console.log('hi');
+        
+    });
+
+    document.getElementsByClassName('toolbarEle')[1].addEventListener('click', event => {
+        mode = modes[2];
+    });
+
+    document.getElementsByClassName('toolbarEle')[2].addEventListener('click', event => {
+        mode = modes[3];
+    });
 }
