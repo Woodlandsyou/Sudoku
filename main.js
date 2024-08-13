@@ -3,7 +3,7 @@ const sudokuContainer = document.getElementById('sudokuContainer');
 sudokuContainer.style.width = vw <= vh ? vw * 0.95 + 'px':vh * 0.95 + 'px';
 sudokuContainer.style.height = sudokuContainer.style.width;
 
-const getRandomIndex = arr => {return Math.floor(Math.random() * arr.length)};
+const getRandomIndex = (arr) => {return Math.floor(Math.random() * arr.length)};
 
 const size = 2, modes = ['delete', 'insert', 'node'];
 const _width = sudokuContainer.offsetWidth, _height = sudokuContainer.offsetHeight;
@@ -32,7 +32,7 @@ class Cell {
     }
 
     set number(val) {
-        if(val > 0 && val <= Math.pow(9)) {
+        if(val > 0 && val <= Math.pow(size, 2)) {
             this._number = val;
             this.div.children[0].textContent = this._number;
         }
@@ -56,15 +56,6 @@ function createDiv(parent) {
     e.style.height = s +'px';
     e.classList.add('item');
     return parent.appendChild(e);
-}
-
-function fillSudoku() {
-    for (let i = 0; i < sudoku.length; i++) {
-        for (let j = 0; j < sudoku[i].length; j++) {
-            const e = sudoku[i][j];
-            
-        }        
-    }
 }
 
 function listeners() {
