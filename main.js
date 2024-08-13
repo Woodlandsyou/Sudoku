@@ -3,13 +3,15 @@ const sudokuContainer = document.getElementById('sudokuContainer');
 sudokuContainer.style.width = vw <= vh ? vw * 0.95 + 'px':vh * 0.95 + 'px';
 sudokuContainer.style.height = sudokuContainer.style.width;
 
-const size = 2, modes = ['inspect', 'delete', 'insert', 'insert node'];
+const getRandomIndex = arr => {return Math.floor(Math.random() * arr.length)};
+
+const size = 2, modes = ['delete', 'insert', 'node'];
 const _width = sudokuContainer.offsetWidth, _height = sudokuContainer.offsetHeight;
 const s = _width <= _height ? _width / Math.pow(size, 2):_height / Math.pow(size, 2);
 
 const sudoku = new Array(Math.pow(size, 2));
 
-let mode = modes[0];
+let mode = modes[1], selected, selectedTool;
 
 class Cell {
     constructor(x, y) {
@@ -22,7 +24,7 @@ class Cell {
         this.div.classList.add(`item-modsize-${this.y % size}-y`);
         this.indeces = [];
         for (let i = 1; i <= Math.pow(size, 2); i++) this.indeces.push(i);
-        this.number = this.indeces[Math.floor(Math.random() * this.indeces.length)];
+        this.number = this.indeces[getRandomIndex(this.indeces)];
     }
 
     get number() {
@@ -30,13 +32,12 @@ class Cell {
     }
 
     set number(val) {
-        this._number = val;
-        this.div.children[0].textContent = this._number;
+        if(val > 0 && val <= Math.pow(9)) {
+            this._number = val;
+            this.div.children[0].textContent = this._number;
+        }
     }
 }
-
-makeArray();
-listeners();
 
 function makeArray() {
     for (let i = 0; i < Math.pow(size, 2); i++) {
@@ -67,23 +68,44 @@ function fillSudoku() {
 }
 
 function listeners() {
-    Array.from(document.getElementsByClassName('item')).forEach(e => {
-        e.addEventListener('click', event => {
-            console.log(e);
+    itemListeners();
+    
+    const toolbarEles = document.getElementsByClassName('toolbarEle');
+    for (let i = 0; i < toolbarEles.length; i++) {
+        toolbarEles[i].addEventListener('click', event => {
+            mode = modes[i];
+            event.target.classList.add('selected');
+            console.log(`${mode} mode`);
         });
-    });
-
-    document.getElementsByClassName('toolbarEle')[0].addEventListener('click', event => {
-        mode = modes[1];
-        console.log('hi');
         
-    });
-
-    document.getElementsByClassName('toolbarEle')[1].addEventListener('click', event => {
-        mode = modes[2];
-    });
-
-    document.getElementsByClassName('toolbarEle')[2].addEventListener('click', event => {
-        mode = modes[3];
-    });
+    }
 }
+
+function itemListeners() {
+    for (let i = 0; i < sudoku.length; i++) {
+        for (let j = 0; j < sudoku[i].length; j++) {            
+            const e = sudoku[i][j];
+            e.div.addEventListener('click', event => {
+                console.log(e);
+                
+                if(selected !== e.div && selected) {
+                    e.div.classList.add('selected');
+                    selected.classList.remove('selected');
+                    selected = e;
+                }
+                if(mode === modes[0]) e.div.children[0].textContent = '';
+            });
+        }        
+    }
+}
+
+
+function start() {
+    makeArray();
+    const r1 = getRandomIndex(sudoku), r2 = getRandomIndex(sudoku[r1]);
+    selected = sudoku[r1][r2];
+    selected.div.classList.add('selected');
+    listeners();
+}
+
+start();

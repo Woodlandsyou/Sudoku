@@ -15,7 +15,7 @@ main {
     height: 100%;
 }
 
-p {
+.item > p {
     font-size: xx-large;
 }
 
@@ -26,6 +26,14 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.item:hover {
+    background-color: lightgray;
+}
+
+.item.selected {
+    background-color: lightblue;
 }
 
 .item-modsize-0-x {
@@ -68,6 +76,14 @@ p {
     padding: 0.5vmin;
 }
 
+.toolbarEleContainer {
+    cursor: default;
+}
+
 .toolbarEle:hover {
     background-color: darkgrey;
+}
+
+.toolbarEle > p {
+    font-size: large;
 }
