@@ -1,18 +1,18 @@
 import { size, squareSize } from "./main.js";
 
-export function columnInterator(column) {
+export function* columnInteratorGenerator(column) {
     for (let i = 0; size * i + column < size * size; i++) {
-        console.log(size * i + column);    
+        yield size * i + column;
     }
 }
 
-export function rowIterator(row) {
+export function* rowIteratorGenerator(row) {
     for (let i = 0; size * row + i < size * (row + 1); i++) {
-        console.log(size * row + i);
+        yield size * row + i;
     }
 }
 
-export function boxIterator(box) {
+export function* boxIteratorGenerator(box) {
     let f = (() => {
         let a = [];
         for (let i = 0; i < squareSize * squareSize - 1; i++) {
@@ -33,6 +33,6 @@ export function boxIterator(box) {
                 return 0;
             }
         };
-        console.log(sigma(indexInSquare) + squareSize * sigma(indexOfSquare));
+        yield sigma(indexInSquare) + squareSize * sigma(indexOfSquare);
     }
 }
