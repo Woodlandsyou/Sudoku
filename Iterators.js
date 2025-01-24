@@ -1,4 +1,4 @@
-import { size, squareSize } from "./main.js";
+import { size, squareSize, f } from "./main.js";
 
 export function* columnInteratorGenerator(column) {
     for (let i = 0; size * i + column < size * size; i++) {
@@ -12,14 +12,16 @@ export function* rowIteratorGenerator(row) {
     }
 }
 
-export function* boxIteratorGenerator(box) {
-    let f = (() => {
-        let a = [];
-        for (let i = 0; i < squareSize * squareSize - 1; i++) {
-            if(i % squareSize === squareSize - 1) a.push(squareSize * (squareSize - 1) + 1);
-            else a.push(1);
+export function* boxIteratorGenerator(x, y) {
+    const box = (() => {
+        let a = y * size + x;
+        let temp = (a - a % squareSize) / squareSize;
+        let i = 0;
+        while (!!(temp % squareSize) || temp >= size) {
+            temp -= f[i];
+            i++;
         }
-        return a;
+        return i;
     })();
 
     for (let i = 0; i < squareSize * squareSize; i++) {

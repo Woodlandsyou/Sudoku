@@ -1,58 +1,53 @@
-import { grid, size, squareSize } from "./main.js";
+import { columnInteratorGenerator, rowIteratorGenerator, boxIteratorGenerator } from "./Iterators.js";
+import { f, grid, size, squareSize } from "./main.js";
 
 export class Cell {
     constructor(x, y) {
         this.d = {x: x, y: y};
-        this.index = (() => {
+        this.indices = (() => {
             let a = [];
             for(let i = 0; i < size; i++) a.push(i + 1);
             return a;
         })();
-
-        this.number = this.index[Math.floor(Math.random() * this.index.length)];
-        this.columnInterator();
-        this.rowIterator();
-        // this.boxIterator();
+        this.number = "";
     }
 
-    columnInterator() {
-        for (let i = 0; size * i + this.d.x < size * size; i++) {
-            const iter = size * i + this.d.x;
-            grid[iter].index.splice(grid[iter].index.indexof(this.number), 1);
-        }
-    }
+    fillNumbers() {
+        this.number = this.indices[Math.floor(Math.random() * this.indices.length)];
 
-    rowIterator() {
-        for (let i = 0; size * this.d.y + i < size * (this.d.y + 1); i++) {
-            const iter = size * this.d.y + i;
-            grid[iter].index.splice(grid[iter].index.indexof(this.number), 1);
-        }
-    }
-
-    boxIterator(box) {
-        let f = (() => {
-            let a = [];
-            for (let i = 0; i < squareSize * squareSize - 1; i++) {
-                if(i % squareSize === squareSize - 1) a.push(squareSize * (squareSize - 1) + 1);
-                else a.push(1);
-            }
-            return a;
-        })();
+        try {
+            let columnIterator = columnInteratorGenerator(this.d.x);
+            this.removeIndex(columnIterator);
     
-        for (let i = 0; i < squareSize * squareSize; i++) {
-            let indexInSquare = f.slice(0, i);
-            let indexOfSquare = f.slice(0, box);
-            
-            let sigma = array => {
-                try {
-                    return array.reduce((accu, current) => accu + current)
-                } catch (error) {
-                    return 0;
-                }
-            };
+            let rowIterator = rowIteratorGenerator(this.d.y);
+            this.removeIndex(rowIterator);
+    
+            let boxIterator = boxIteratorGenerator(this.d.x, this.d.y);
+            this.removeIndex(boxIterator);
 
-            const iter = sigma(indexInSquare) + squareSize * sigma(indexOfSquare);
-            grid[iter].index.splice(grid[iter].index.indexof(this.number), 1);
+        } catch(err) {
+            const current = parseInt(err.message);
+            let columnIterator = columnInteratorGenerator(current.d.x);
+            
+            let rowIterator = rowIteratorGenerator(current.d.y);
+    
+            let boxIterator = boxIteratorGenerator(current.d.x, current.d.y);
+        }
+    }
+
+    removeIndex(Iterable) {
+        for (const i of Iterable) {
+            const index = grid[i].indices.indexOf(this.number);
+            if(index >= 0) {
+                grid[i].indices.splice(index, 1);                
+            }
+            if(!grid[i].indices.length && !grid[i].number) throw new Error(i);
+            // console.log(grid[i], this.number);
+        }
+    }
+
+    addIndex(Iterable) {
+        for (const i of Iterable) {
         }
     }
 }
