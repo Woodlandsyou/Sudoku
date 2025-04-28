@@ -26,28 +26,15 @@ export class Cell {
             this.removeIndex(boxIterator);
 
         } catch(err) {
-            const current = parseInt(err.message);
-            let columnIterator = columnInteratorGenerator(current.d.x);
-            
-            let rowIterator = rowIteratorGenerator(current.d.y);
-    
-            let boxIterator = boxIteratorGenerator(current.d.x, current.d.y);
+
         }
     }
 
     removeIndex(Iterable) {
         for (const i of Iterable) {
             const index = grid[i].indices.indexOf(this.number);
-            if(index >= 0) {
-                grid[i].indices.splice(index, 1);                
-            }
+            if(index >= 0) grid[i].indices.splice(index, 1);                
             if(!grid[i].indices.length && !grid[i].number) throw new Error(i);
-            // console.log(grid[i], this.number);
-        }
-    }
-
-    addIndex(Iterable) {
-        for (const i of Iterable) {
         }
     }
 }
