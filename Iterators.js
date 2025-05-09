@@ -12,7 +12,8 @@ export function* rowIteratorGenerator(row) {
     }
 }
 
-export function* boxIteratorGenerator(x, y) {
+export function* boxIteratorGenerator(pos) {
+    const { x, y } = pos;
     const box = (() => {
         let a = y * size + x;
         let temp = (a - a % squareSize) / squareSize;

@@ -1,9 +1,9 @@
-import { columnInteratorGenerator, rowIteratorGenerator, boxIteratorGenerator } from "./Iterators.js";
-import { f, grid, size, squareSize } from "./main.js";
+import { boxIteratorGenerator, columnInteratorGenerator, rowIteratorGenerator } from "./Iterators.js";
+import { grid, size, current } from "./main.js";
 
 export class Cell {
     constructor(x, y) {
-        this.d = {x: x, y: y};
+        this.pos = {x: x, y: y};
         this.indices = (() => {
             let a = [];
             for(let i = 0; i < size; i++) a.push(i + 1);
@@ -12,29 +12,28 @@ export class Cell {
         this.number = "";
     }
 
-    fillNumbers() {
+    setNumber() {
         this.number = this.indices[Math.floor(Math.random() * this.indices.length)];
 
-        try {
-            let columnIterator = columnInteratorGenerator(this.d.x);
-            this.removeIndex(columnIterator);
-    
-            let rowIterator = rowIteratorGenerator(this.d.y);
-            this.removeIndex(rowIterator);
-    
-            let boxIterator = boxIteratorGenerator(this.d.x, this.d.y);
-            this.removeIndex(boxIterator);
+        let cI = columnInteratorGenerator(this.pos.x);
+        this.removeIndex(cI);
 
-        } catch(err) {
+        let rI = rowIteratorGenerator(this.pos.y);
+        this.removeIndex(rI);
 
-        }
+        let bI = boxIteratorGenerator(this.pos);
+        this.removeIndex(bI);
+        return this.number;
     }
 
-    removeIndex(Iterable) {
-        for (const i of Iterable) {
+    removeIndex(iterable) {
+        let r = [];
+        for (const i of iterable) {
+            if(grid[i] === this) continue;
             const index = grid[i].indices.indexOf(this.number);
-            if(index >= 0) grid[i].indices.splice(index, 1);                
-            if(!grid[i].indices.length && !grid[i].number) throw new Error(i);
+            if(index >= 0) grid[i].indices.splice(index, 1);
+            r.push(grid[i]);
         }
+        return r;
     }
 }
