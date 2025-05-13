@@ -1,5 +1,4 @@
-import { boxIteratorGenerator, columnInteratorGenerator, rowIteratorGenerator } from "./Iterators.js";
-import { grid, size, current } from "./main.js";
+import { grid, size } from "./main.js";
 
 export class Cell {
     constructor(x, y) {
@@ -9,21 +8,7 @@ export class Cell {
             for(let i = 0; i < size; i++) a.push(i + 1);
             return a;
         })();
-        this.number = "";
-    }
-
-    setNumber() {
-        this.number = this.indices[Math.floor(Math.random() * this.indices.length)];
-
-        let cI = columnInteratorGenerator(this.pos.x);
-        this.removeIndex(cI);
-
-        let rI = rowIteratorGenerator(this.pos.y);
-        this.removeIndex(rI);
-
-        let bI = boxIteratorGenerator(this.pos);
-        this.removeIndex(bI);
-        return this.number;
+        this.number = undefined;
     }
 
     removeIndex(iterable) {

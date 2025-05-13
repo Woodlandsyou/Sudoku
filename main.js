@@ -12,7 +12,7 @@ export const f = (() => {
     }
     return a;
 })();
-export let grid = createGrid(size), current;
+export let grid = createGrid(size);
 
 window.grid = grid;
 window.iterators = iterators;
@@ -26,19 +26,25 @@ function createGrid(length) {
     return a;
 }
 
+function setNumbers(i) {
+    const current = grid[i];
+        if(current.number != undefined) {
+            current.number
+        }
+        let rI = iterators.rowIteratorGenerator(current.d.y);
+        
+        return i;
+}
+
 const game = p => {
 
     p.setup = () => {
         p.createCanvas(_width, _width);
-    }
-    
-    p.draw = () => {
         for (let i = 0; i < grid.length; i++) {
-            const e = grid[i];
-            
+            i = setNumbers(i);
+            drawRects(p);
+            drawLines(p);
         }
-        drawRects(p);
-        drawLines(p);
     }
 }
 
