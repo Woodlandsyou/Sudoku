@@ -1,4 +1,4 @@
-import { grid, size } from "./main.js";
+import { size } from "./main.js";
 
 export class Cell {
     constructor(x, y) {
@@ -9,16 +9,5 @@ export class Cell {
             return a;
         })();
         this.number = undefined;
-    }
-
-    removeIndex(iterable) {
-        let r = [];
-        for (const i of iterable) {
-            if(grid[i] === this) continue;
-            const index = grid[i].indices.indexOf(this.number);
-            if(index >= 0) grid[i].indices.splice(index, 1);
-            r.push(grid[i]);
-        }
-        return r;
     }
 }

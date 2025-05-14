@@ -12,7 +12,7 @@ export const f = (() => {
     }
     return a;
 })();
-export let grid = createGrid(size);
+export let grid = createGrid(size), current;
 
 window.grid = grid;
 window.iterators = iterators;
@@ -26,14 +26,33 @@ function createGrid(length) {
     return a;
 }
 
-function setNumbers(i) {
-    const current = grid[i];
-        if(current.number != undefined) {
-            current.number
+function removeIndex(iterable) {
+        let r = [];
+        for (const i of iterable) {
+            if(grid[i] === current) continue;
+            const index = grid[i].indices.indexOf(current.number);
+            if(index >= 0) grid[i].indices.splice(index, 1);
+            r.push(grid[i]);
         }
-        let rI = iterators.rowIteratorGenerator(current.d.y);
-        
-        return i;
+        return r;
+    }
+
+function setNumbers(i) {
+    current = grid[i];
+    if(current.number != undefined) {
+        current.number
+    }
+    current.number = current.indices[Math.floor(Math.random() * current.indices.length)];
+    const rI = iterators.rowIteratorGenerator(current.pos.y);
+    removeIndex(rI);
+
+    const cI = iterators.columnInteratorGenerator(current.pos.x);
+    removeIndex(cI);
+
+    const bI = iterators.boxIteratorGenerator(current.pos);
+    removeIndex(bI);
+    
+    return i;
 }
 
 const game = p => {
